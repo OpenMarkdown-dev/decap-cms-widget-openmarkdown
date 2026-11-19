@@ -1,0 +1,37 @@
+# Publish decap-cms-widget-openmarkdown to npm when a version tag is pushed.
+#
+# Trigger: a tag `v<version>` equal to package.json's version.
+# Auth: npm trusted publishing (OIDC). Configure on npmjs.com: package →
+# Settings → Trusted publishing → GitHub Actions, owner OpenMarkdown-dev,
+# repo decap-cms-widget-openmarkdown, workflow release.yml, environment npm.
+# No token is stored anywhere; the version is published with provenance.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm >= 11.5.1.
+      - run: npm install -g npm@^11.5.1
+      - name: Tag matches package.json
+        run: |
+          v="$(node -p 'require("./package.json").version')"
+          [ "${GITHUB_REF_NAME}" = "v${v}" ] || { echo "tag ${GITHUB_REF_NAME} != v${v}"; exit 1; }
+      - run: npm ci --no-audit --no-fund
+      # prepack runs build.mjs, so dist/ is built fresh inside npm publish.
+      - name: Publish with provenance
+        run: npm publish --provenance --access public
