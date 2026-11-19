@@ -1,0 +1,55 @@
+{
+  "name": "decap-cms-widget-openmarkdown",
+  "version": "0.1.0",
+  "description": "A Decap CMS Markdown widget that edits the Markdown source directly: live preview, tables edited in place, and only the lines you change change.",
+  "keywords": [
+    "decap-cms",
+    "decap-cms-widget",
+    "netlify-cms",
+    "netlify-cms-widget",
+    "markdown",
+    "markdown-editor",
+    "live-preview",
+    "codemirror",
+    "gfm",
+    "tables"
+  ],
+  "homepage": "https://github.com/OpenMarkdown-dev/decap-cms-widget-openmarkdown#readme",
+  "bugs": {
+    "url": "https://github.com/OpenMarkdown-dev/decap-cms-widget-openmarkdown/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpenMarkdown-dev/decap-cms-widget-openmarkdown.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./script": "./dist/decap-cms-widget-openmarkdown.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "prepack": "node build.mjs"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "dependencies": {
+    "@codemirror/language-data": "6.5.2",
+    "@openmarkdown-dev/editor": "^0.2.1",
+    "create-react-class": "^15.7.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
